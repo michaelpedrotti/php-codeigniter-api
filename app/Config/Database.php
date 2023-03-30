@@ -8,7 +8,7 @@ class Database extends \CodeIgniter\Database\Config {
 
     public array $default = [
         'DSN'      => '',
-        'hostname' => '172.17.0.2',
+        'hostname' => '172.17.0.3',
         'username' => 'root',
         'password' => 'root',
         'database' => 'app',

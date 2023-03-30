@@ -7,3 +7,5 @@ $routes = Services::routes(true)
 
 $routes->resource('user', ['controller' => 'UserController']);
 $routes->resource('profile', ['controller' => 'ProfileController']);
+
+$routes->post('/auth/login', 'AuthController::login');
