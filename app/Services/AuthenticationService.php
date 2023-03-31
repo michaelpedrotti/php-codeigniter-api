@@ -2,6 +2,7 @@
 
 use App\Models\UserModel as Model;
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 class AuthenticationService {
      

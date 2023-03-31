@@ -5,7 +5,12 @@ $routes = Services::routes(true)
     ->setTranslateURIDashes(false)
     ->set404Override();
 
-$routes->resource('user', ['controller' => 'UserController']);
-$routes->resource('profile', ['controller' => 'ProfileController']);
+$routes->resource('user', [
+    'filter' => ['is_authenticated', 'is_authorized'], 
+    'controller' => 'UserController',
+    'resource' => 'user',
+]);
+
+$routes->resource('profile', ['filter' => 'is_authenticated', 'controller' => 'ProfileController']);
 
 $routes->post('/auth/login', 'AuthController::login');

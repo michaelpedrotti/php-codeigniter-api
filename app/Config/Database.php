@@ -7,8 +7,8 @@ class Database extends \CodeIgniter\Database\Config {
     public string $defaultGroup = 'default';
 
     public array $default = [
-        'DSN'      => '',
-        'hostname' => '172.17.0.3',
+//        'DSN'      => '',
+        'hostname' => 'dbhost',
         'username' => 'root',
         'password' => 'root',
         'database' => 'app',
@@ -25,4 +25,18 @@ class Database extends \CodeIgniter\Database\Config {
         'failover' => [],
         'port'     => 3306,
     ];
+        
+    public function __construct() {
+         
+        $this->default = array_merge([
+            'DBDriver' => env('DB_DIALECT', 'MySQLi'),
+            'hostname' => env('DB_HOST', 'dbhost'),
+            'port'     => env('DB_PORT', 3306),
+            'username' => env('DB_USERNAME', 'localhost'),
+            'password' => env('DB_PASSWORD', 'localhost'),
+            'database' => env('DB_NAME', 'app')
+        ], $this->default);
+        
+        parent::__construct();
+    }
 }
