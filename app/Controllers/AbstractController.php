@@ -25,6 +25,17 @@ abstract class AbstractController extends ResourceController {
         
         return $this->respond(['error' => true, 'message' => 'create was not implemented']);
     }
+    
+    public function create() {
+        
+        return $this->fail(lang('RESTful.notImplemented', ['create']), 501);
+    }
+    
+    public function edit($id = null) {
+        
+        return $this->fail(lang('RESTful.notImplemented', ['edit']), 501);
+    }
+
 
     public function update($id = 0) {
         

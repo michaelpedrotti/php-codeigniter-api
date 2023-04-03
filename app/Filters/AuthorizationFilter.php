@@ -13,7 +13,7 @@ class AuthorizationFilter implements FilterInterface {
                
         $opts = $router->getMatchedRouteOptions();
         
-        if(!Service::newInstance()->hasPermission($opts['resource'], '', $request->user)){
+        if(!Service::newInstance()->hasPermission($opts['resource'], 'R', $request->user)){
             
             return \Config\Services::response()
                 ->setStatusCode(403)
