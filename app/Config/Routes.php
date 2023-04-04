@@ -11,21 +11,16 @@ $routes->resource('user', [
     'resource' => 'user',
 ]);
 
+$routes->resource('profile/(:num)/permission', [
+    'filter' => ['is_authenticated', 'is_authorized'], 
+    'controller' => 'PermissionController',
+    'resource' => 'profile',
+]);
+
 $routes->resource('profile', [
     'filter' => ['is_authenticated', 'is_authorized'], 
     'controller' => 'ProfileController',
     'resource' => 'profile',
 ]);
-
-$routes->group('/profile/(:profile)', static function ($routes) {
-    
-    $routes->resource('permission', [
-        'filter' => ['is_authenticated', 'is_authorized'], 
-        'controller' => 'PermissionController',
-        'resource' => 'permission',
-    ]);
-});
-
-
 
 $routes->post('/auth/login', 'AuthController::login');
