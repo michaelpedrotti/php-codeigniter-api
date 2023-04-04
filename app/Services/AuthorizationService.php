@@ -11,8 +11,7 @@ class AuthorizationService {
         
         $action = getattr(config('Config\Authz')->permissions, $action, $action);
 
-        $query = "SELECT 
-                COUNT(*) as total 
+        $query = "SELECT COUNT(*) as total 
             FROM user 
             INNER JOIN profile ON(user.profile_id = profile.id) 
             INNER JOIN permission ON(profile.id = permission.profile_id) 
