@@ -21,11 +21,40 @@ class UserController extends AbstractController {
         } 
     }
     
+    public function new() {
+        
+        return $this->respond([
+            'error' => false,
+            'form' => (object)[]
+        ]); 
+    }
+    
     public function create() {
         
         [ $data, $password ] = Service::newInstance($this->model)->create($this->request->getPost());
         
         return $this->respond(['error' => false, 'data' => $data, 'password' => $password]); 
+    }
+    
+    public function show($id = 0) {
+        
+        $data = Service::newInstance($this->model)->find($id);
+        
+        return $this->respond([
+            'error' => false, 
+            'data' => $data
+        ]); 
+    }
+    
+    public function edit($id = null) {
+        
+        $data = Service::newInstance($this->model)->find($id);
+        
+        return $this->respond([
+            'error' => false,
+            'data' => $data,
+            'form' => (object)[]
+        ]); 
     }
     
     public function update($id = 0) {
@@ -40,5 +69,9 @@ class UserController extends AbstractController {
         $data = Service::newInstance($this->model)->delete($id);
         
         return $this->respond(['error' => false, 'data' => $data]); 
+    }
+    
+    public function __construct() {
+
     }
 }

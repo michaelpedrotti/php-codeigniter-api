@@ -24,7 +24,7 @@ class UserService extends AbstractService {
         
         if(empty($row)){
             
-            throw new \Exception();
+            throw new \Exception('User was not found');
         }
         
         unset($row['password']);

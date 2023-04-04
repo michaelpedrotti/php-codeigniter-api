@@ -19,9 +19,7 @@ abstract class AbstractService {
      */
     protected function _filter(\CodeIgniter\Model $builder, $params): void {
         
-        $builder->offset(0)->limit(10);
-        
-        
+        $builder->offset(0)->limit(10); 
     }
     
     protected function _builder($columns = ['*']){
@@ -29,13 +27,25 @@ abstract class AbstractService {
         return $this->model->select('SQL_CALC_FOUND_ROWS '.implode(',', $columns), false);
     }
 
-    public function find($id = 0) {}
+    public function find($id = 0) {
+        
+        return [];
+    }
     
-    public function create($data = []) {}
+    public function create($data = []) {
+        
+        return [];
+    }
     
-    public function update($data = [], $id = 0){}
+    public function update($data = [], $id = 0){
+        
+        return [];
+    }
     
-    public function delete($id = 0){}
+    public function delete($id = 0){
+        
+        return [];
+    }
     
     public function __construct(\CodeIgniter\Model $model) {
         

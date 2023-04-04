@@ -6,7 +6,7 @@ use CodeIgniter\API\ResponseTrait;
 abstract class AbstractController extends ResourceController {
     
     use ResponseTrait;
-
+    
     public function index() {
 
         return $this->respond(['error' => true, 'message' => 'index was not implemented']);
