@@ -70,8 +70,4 @@ class UserController extends AbstractController {
         
         return $this->respond(['error' => false, 'data' => $data]); 
     }
-    
-    public function __construct() {
-
-    }
 }

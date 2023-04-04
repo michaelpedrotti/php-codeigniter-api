@@ -6,14 +6,15 @@ use CodeIgniter\HTTP\ResponseInterface as Response;
 use App\Services\AuthorizationService as Service;
 
 class AuthorizationFilter implements FilterInterface {
-    
+       
     public function before(Request $request, $arguments = null) {
         
         $router = \Config\Services::router();
-               
-        $opts = $router->getMatchedRouteOptions();
         
-        if(!Service::newInstance()->hasPermission($opts['resource'], 'R', $request->user)){
+        $resource = getattr($router->getMatchedRouteOptions(), 'resource');
+        $action = getattr(config('Config\Authz')->actions, $router->methodName());
+          
+        if(!Service::newInstance()->hasPermission($resource, $action, $request->user)){
             
             return \Config\Services::response()
                 ->setStatusCode(403)
@@ -26,4 +27,9 @@ class AuthorizationFilter implements FilterInterface {
     }
     
     public function after(Request $request, Response $response, $arguments = null):void { }
+    
+    public function __construct() {
+       
+        helper('attribute');
+    }
 }
