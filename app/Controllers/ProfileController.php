@@ -30,10 +30,13 @@ class ProfileController extends AbstractController {
     }
     
     public function create() {
+                
+        $data = Service::newInstance($this->model)->create($this->getBody());
         
-        [ $data, $password ] = Service::newInstance($this->model)->create($this->request->getPost());
-        
-        return $this->respond(['error' => false, 'data' => $data, 'password' => $password]); 
+        return $this->respond([
+            'error' => false, 
+            'data' => $data
+        ]); 
     }
     
     public function show($id = 0) {
@@ -59,7 +62,7 @@ class ProfileController extends AbstractController {
     
     public function update($id = 0) {
         
-        $data = Service::newInstance($this->model)->update($this->request->getRawInput(), $id);
+        $data = Service::newInstance($this->model)->update($this->getBody(), $id);
         
         return $this->respond(['error' => false, 'data' => $data]); 
     }

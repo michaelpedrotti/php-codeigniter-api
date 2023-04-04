@@ -7,6 +7,22 @@ abstract class AbstractController extends ResourceController {
     
     use ResponseTrait;
     
+    protected function getBody(){
+        
+        if($this->request->is('JSON')){
+
+            return $this->request->getJSON(true);
+        }
+        elseif($this->request->is('POST')){
+            
+            return $this->request->getPost();
+        }
+        elseif($this->request->is('PUT')){
+            
+            return $this->request->getRawInput();
+        }
+    }
+    
     public function index() {
 
         return $this->respond(['error' => true, 'message' => 'index was not implemented']);
