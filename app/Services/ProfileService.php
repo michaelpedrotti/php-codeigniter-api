@@ -32,7 +32,9 @@ class ProfileService extends AbstractService {
 
         $entity = new Entity($data);
              
-        $entity->id = $this->model->save($entity);
+        $this->model->save($entity);
+        
+        $entity->id = $this->model->getInsertID();
         
         return $entity;
     }
