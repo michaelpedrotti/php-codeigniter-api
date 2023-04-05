@@ -39,8 +39,10 @@ class UserService extends AbstractService {
         $data['password'] = $encrypt;
         
         $entity = new Entity($data);
+        
+        $this->model->save($entity);
              
-        $entity->id = $this->model->save($entity);
+        $entity->id = $this->model->getInsertID();
         
         unset($entity->password);
                 

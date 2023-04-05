@@ -4,5 +4,7 @@ use CodeIgniter\Entity\Entity;
 
 class UserEntity extends Entity {
     
-    protected $casts = [];
+    protected $casts = [
+        'profile_id' => 'int'
+    ];
 }

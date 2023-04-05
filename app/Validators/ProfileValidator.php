@@ -13,7 +13,7 @@ class ProfileValidator {
     
     static public $messages = [
         
-        'nome' => [
+        'name' => [
             'required' => 'Name is required',
         ]
     ];
