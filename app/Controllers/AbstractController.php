@@ -23,6 +23,17 @@ abstract class AbstractController extends ResourceController {
         }
     }
     
+    protected function respondBadRequest(){
+        
+        return $this->respond([
+                'error' => true, 
+                'message' => 'Check your fields', 
+                'fields' => $this->validator->getErrors()
+            ], 
+            $this->codes['invalid_data']
+        );
+    }
+    
     public function index() {
 
         return $this->respond(['error' => true, 'message' => 'index was not implemented']);
@@ -51,7 +62,6 @@ abstract class AbstractController extends ResourceController {
         
         return $this->fail(lang('RESTful.notImplemented', ['edit']), 501);
     }
-
 
     public function update($id = 0) {
         

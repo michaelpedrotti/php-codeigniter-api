@@ -2,6 +2,7 @@
  
 use App\Models\ProfileModel as Model;
 use App\Services\ProfileService as Service;
+use App\Validators\ProfileValidator as Validator;
 
 class ProfileController extends AbstractController {
     
@@ -9,16 +10,9 @@ class ProfileController extends AbstractController {
     
     public function index() {
           
-        try {
+        $result = Service::newInstance($this->model)->paginate($this->request->getGet());
         
-            $result = Service::newInstance($this->model)->paginate($this->request->getGet());
-        
-            return $this->respond($result); 
-        }
-        catch(\Exception $e){
-            
-            return $this->fail($e->getMessage(), $e->getCode(), __FUNCTION__);
-        } 
+        return $this->respond($result); 
     }
     
     public function new() {
@@ -30,13 +24,18 @@ class ProfileController extends AbstractController {
     }
     
     public function create() {
+        
+        if(!$this->validate(Validator::$rules, Validator::$messages)){
+                        
+            return $this->respondBadRequest();
+        }
                 
         $data = Service::newInstance($this->model)->create($this->getBody());
         
         return $this->respond([
             'error' => false, 
             'data' => $data
-        ]); 
+        ], $this->codes['created']); 
     }
     
     public function show($id = 0) {
@@ -61,6 +60,11 @@ class ProfileController extends AbstractController {
     }
     
     public function update($id = 0) {
+        
+        if(!$this->validate(Validator::$rules, Validator::$messages)){
+                        
+            return $this->respondBadRequest();
+        }
         
         $data = Service::newInstance($this->model)->update($this->getBody(), $id);
         

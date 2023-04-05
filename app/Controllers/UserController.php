@@ -2,6 +2,7 @@
 
 use App\Models\UserModel as Model;
 use App\Services\UserService as Service;
+use App\Validators\UserValidator as Validator;
 
 class UserController extends AbstractController {
 
@@ -9,16 +10,9 @@ class UserController extends AbstractController {
     
     public function index() {
           
-        try {
+        $result = Service::newInstance($this->model)->paginate($this->request->getGet());
         
-            $result = Service::newInstance($this->model)->paginate($this->request->getGet());
-        
-            return $this->respond($result); 
-        }
-        catch(\Exception $e){
-            
-            return $this->fail($e->getMessage(), $e->getCode(), __FUNCTION__);
-        } 
+        return $this->respond($result); 
     }
     
     public function new() {
@@ -31,9 +25,18 @@ class UserController extends AbstractController {
     
     public function create() {
         
-        [ $data, $password ] = Service::newInstance($this->model)->create($this->request->getPost());
+        if(!$this->validate(Validator::$rules, Validator::$messages)){
+                        
+            return $this->respondBadRequest();
+        }
         
-        return $this->respond(['error' => false, 'data' => $data, 'password' => $password]); 
+        [ $data, $password ] = Service::newInstance($this->model)->create($this->getBody());
+        
+        return $this->respond([
+            'error' => false, 
+            'data' => $data, 
+            'password' => $password
+        ], $this->codes['created']); 
     }
     
     public function show($id = 0) {
@@ -58,8 +61,13 @@ class UserController extends AbstractController {
     }
     
     public function update($id = 0) {
+      
+        if(!$this->validate(Validator::$rules, Validator::$messages)){
+                        
+            return $this->respondBadRequest();
+        }
         
-        $data = Service::newInstance($this->model)->update($this->request->getRawInput(), $id);
+        $data = Service::newInstance($this->model)->update($this->getBody(), $id);
         
         return $this->respond(['error' => false, 'data' => $data]); 
     }
