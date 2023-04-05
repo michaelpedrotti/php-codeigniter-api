@@ -1,5 +1,7 @@
 <?php namespace App\Services;
 
+use App\Entities\PermissionEntity as Entity;
+
 class PermissionService extends AbstractService  {
     
     public function paginate($filter = [], $columns = ['id', 'resource', 'actions']){
@@ -14,7 +16,7 @@ class PermissionService extends AbstractService  {
         ];
     }
     
-    public function find($id = 0) {
+    public function find($id = 0): Entity {
         
         $row = $this->model->find($id);
         
@@ -26,29 +28,31 @@ class PermissionService extends AbstractService  {
         return $row;
     }
     
-    public function create($row = []){
+    public function create($data = []): Entity {
                 
-        $row['id'] = $this->model->insert($row);
+        $entity = new Entity($data);
+             
+        $entity->id = $this->model->save($entity);
         
-
-        return $row;
+        return $entity;
     }
     
-    public function update($data = [], $id = 0){
+    public function update($data = [], $id = 0): Entity {
         
-        $row = $this->find($id);
+        $entity = $this->find($id);
+        $entity->fill($data);
+        
+        $this->model->save($entity);
 
-        $this->model->update($row['id'], $row);
-
-        return $row;
+        return $entity;
     }
     
-    public function delete($id = 0){
+    public function delete($id = 0): Entity {
         
-        $row = $this->find($id);
+        $entity = $this->find($id);        
         
-        $this->model->delete($row['id']);
-        
-        return $row;
+        $this->model->delete($entity->id);
+
+        return $entity;
     }
 }

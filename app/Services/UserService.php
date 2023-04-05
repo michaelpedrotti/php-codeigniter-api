@@ -1,6 +1,6 @@
 <?php namespace App\Services;
 
-use App\Models\UserModel as Model;
+use App\Entities\UserEntity as Entity;
 
 class UserService extends AbstractService {
     
@@ -18,48 +18,51 @@ class UserService extends AbstractService {
         ];
     }
     
-    public function find($id = 0) {
+    public function find($id = 0): Entity {
         
-        $row = $this->model->find($id);
+        $entity = $this->model->find($id);
         
-        if(empty($row)){
+        if(empty($entity)){
             
             throw new \Exception('User was not found');
         }
         
-        unset($row['password']);
+        unset($entity->password);
                 
-        return $row;
+        return $entity;
     }
     
-    public function create($row = []){
-                
+    public function create($data = []): array {
+        
         [ $password, $encrypt ] = password_generator();
         
-        $row['password'] = $encrypt;
-
-        $row['id'] = $this->model->insert($row);
+        $data['password'] = $encrypt;
         
-        unset($row['password']);
+        $entity = new Entity($data);
+             
+        $entity->id = $this->model->save($entity);
         
-        return [ $row, $password ];
+        unset($entity->password);
+                
+        return [ $entity, $password ];
     }
     
-    public function update($data = [], $id = 0){
+    public function update($data = [], $id = 0): Entity {
         
-        $row = $this->find($id);
+        $entity = $this->find($id);
+        $entity->fill($data);
+        
+        $this->model->save($entity);
 
-        $this->model->update($row['id'], $row);
-
-        return $row;
+        return $entity;
     }
     
-    public function delete($id = 0){
+    public function delete($id = 0): Entity {
         
-        $row = $this->find($id);
+        $entity = $this->find($id);        
         
-        $this->model->delete($row['id']);
-        
-        return $row;
+        $this->model->delete($entity->id);
+
+        return $entity;
     }
 }
