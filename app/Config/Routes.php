@@ -23,4 +23,12 @@ $routes->resource('profile', [
     'resource' => 'profile',
 ]);
 
+$routes->group('auth', static function($routes) {
+    
+    $routes->get('me', 'AuthController::me');
+    $routes->post('verify', 'AuthController::verify');
+    $routes->get('setting', 'AuthController::edit');
+    $routes->post('setting', 'AuthController::update');
+});
+
 $routes->post('/auth/login', 'AuthController::login');

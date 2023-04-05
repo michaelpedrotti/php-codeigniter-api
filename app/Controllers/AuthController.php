@@ -36,4 +36,36 @@ class AuthController extends \CodeIgniter\RESTful\BaseResource {
         
         return $this->respond($json);
     }
+    
+    public function edit(){
+        
+        return $this->respond([
+            'error' => true, 
+            'message' => 'edit is not implemented'
+        ]);
+    }
+    
+    public function update(){
+        
+        return $this->respond([
+            'error' => true, 
+            'message' => 'update is not implemented'
+        ]);
+    }
+    
+    public function verify(){
+        
+        return $this->respond([
+            'error' => true, 
+            'message' => 'verify is not implemented'
+        ]);
+    }
+    
+    public function me(){
+        
+        return $this->respond([
+            'error' => true, 
+            'message' => 'me is not implemented'
+        ]);
+    }
 }

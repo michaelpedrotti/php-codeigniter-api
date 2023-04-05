@@ -11,16 +11,10 @@ class Filters extends \CodeIgniter\Config\BaseConfig {
 
     public array $globals = [
         'before' => [],
-        'after' => [
-//            'toolbar',
-        ],
+        'after' => []
     ];
 
-    public array $methods = [
-//        'post' => ['foo', 'bar']
-    ];
+    public array $methods = [];
 
-    public array $filters = [
-//        'isLoggedIn' => ['before' => ['account/*', 'profiles/*']]
-    ];
+    public array $filters = [];
 }
