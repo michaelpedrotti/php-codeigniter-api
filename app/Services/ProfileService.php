@@ -16,13 +16,18 @@ class ProfileService extends AbstractService {
         ];
     }
     
-    public function find($id = 0): Entity {
+    public function find($id = 0, bool $includes = false): Entity {
         
         $entity = $this->model->find($id);
         
         if(empty($entity)){
             
             throw new \Exception('Profile was not found');
+        }
+        
+        if($includes !== false){
+            
+            $entity->permissions = PermissionService::newInstance(model('PermissionModel'))->find($entity->id);
         }
                 
         return $entity;

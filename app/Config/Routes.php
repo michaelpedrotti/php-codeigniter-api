@@ -1,4 +1,7 @@
 <?php namespace Config;
+/**
+ * @link https://codeigniter4.github.io/userguide/incoming/routing.html
+ */
 
 $routes = Services::routes(true)
     ->setDefaultNamespace('App\Controllers')
@@ -23,7 +26,7 @@ $routes->resource('profile', [
     'resource' => 'profile',
 ]);
 
-$routes->group('auth', static function($routes) {
+$routes->group('auth', ['filter' => 'is_authenticated'], static function($routes) {
     
     $routes->get('me', 'AuthController::me');
     $routes->post('verify', 'AuthController::verify');

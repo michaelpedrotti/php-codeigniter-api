@@ -1,7 +1,7 @@
 <?php namespace App\Controllers;
  
 use CodeIgniter\API\ResponseTrait;
-use App\Services\AuthenticationService as Service;
+use App\Services\{ AuthenticationService as Service, UserService };
 
 
 class AuthController extends \CodeIgniter\RESTful\BaseResource {
@@ -38,34 +38,90 @@ class AuthController extends \CodeIgniter\RESTful\BaseResource {
     }
     
     public function edit(){
+
+        $data = UserService::newInstance(model('UserModel'))->find($this->request->user);
+        
+        unset($data->profile_id);
         
         return $this->respond([
-            'error' => true, 
-            'message' => 'edit is not implemented'
+            'error' => false, 
+            'data' => $data
         ]);
     }
     
     public function update(){
         
-        return $this->respond([
-            'error' => true, 
-            'message' => 'update is not implemented'
-        ]);
+        $data = [];
+        
+        $name = $this->request->getPost('name');
+        if(!empty($name)){
+            $data['name'] = $name;
+        }
+        
+        $email = $this->request->getPost('email');
+        if(!empty($email)){
+            $data['email'] = $email;
+        }
+        
+        $pass = $this->request->getPost('password');
+        if(!empty($pass)){
+            $data['password'] = $pass;
+        }
+        
+        if(empty($data)){
+            
+            return $this->respond([
+                'error' => true,
+                'message' => 'Notting was changed',
+            ]);
+        }
+        else {
+            
+            $data = UserService::newInstance(model('UserModel'))->update($data, $this->request->user);
+            
+            return $this->respond([
+                'error' => false,
+                'message' => 'Settings were updated',
+                'data' => $data
+            ]);
+        }
     }
     
     public function verify(){
         
-        return $this->respond([
-            'error' => true, 
-            'message' => 'verify is not implemented'
-        ]);
+        $json = ['error' => false, 'status' => 200];
+        
+        try {
+            
+            Service::newInstance()->verify($this->request->getPost('token'));
+            
+            $json['message'] = 'Token was verified';  
+        } 
+        catch (\Exception $e) {
+
+            $json['error'] = true;
+            $json['status'] = 500;
+            $json['message'] = $e->getMessage();
+        }
+        
+        return $this->respond($json, $json['status']);
     }
     
     public function me(){
         
+        $data = UserService::newInstance(model('UserModel'))->find($this->request->user, true);
+        
+        unset($data->profile_id);
+        
+        foreach($data->profile->permissions as &$permission){
+            
+            unset($permission->profile_id);
+        }
+        
+        
         return $this->respond([
-            'error' => true, 
-            'message' => 'me is not implemented'
+            'error' => false, 
+            'data' => $data
         ]);
     }
 }

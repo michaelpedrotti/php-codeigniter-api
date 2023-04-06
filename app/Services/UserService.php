@@ -18,13 +18,18 @@ class UserService extends AbstractService {
         ];
     }
     
-    public function find($id = 0): Entity {
+    public function find($id = 0, bool $includes = false): Entity {
         
         $entity = $this->model->find($id);
         
         if(empty($entity)){
             
             throw new \Exception('User was not found');
+        }
+        
+        if($includes !== false){
+            
+            $entity->profile = ProfileService::newInstance(model('ProfileModel'))->find($entity->profile_id, $includes);
         }
         
         unset($entity->password);
